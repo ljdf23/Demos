@@ -40,15 +40,17 @@ public class DatabaseGenerator {
         Entity line = addLine(schema, planDetail);
         addPhoneAllLines(schema, line);
         addCatalogs(schema);
+        addTermsAndConditions(schema);
     }
 
     private static Entity addUserEntities(final Schema schema) {
         Entity user = schema.addEntity("User");
         user.addIdProperty().primaryKey().autoincrement();
-        user.addIntProperty("user_id").notNull();
-        user.addStringProperty("last_name");
-        user.addStringProperty("first_name");
+        user.addIntProperty("userId").notNull();
+        user.addStringProperty("code");
+        user.addStringProperty("name");
         user.addStringProperty("email");
+        user.addStringProperty("status");
         return user;
     }
 
@@ -76,7 +78,7 @@ public class DatabaseGenerator {
         planDetail.addLongProperty("remainInternet");
 
         Property property = other.getProperties().get(0);
-        ToMany toMany = planDetail.addToMany(other, property, "other");
+        planDetail.addToMany(other, property, "other");
 
         return planDetail;
     }
@@ -107,5 +109,14 @@ public class DatabaseGenerator {
         catalogs.addIntProperty("key");
         catalogs.addStringProperty("value");
         return catalogs;
+    }
+
+    private static Entity addTermsAndConditions(final Schema schema)
+    {
+        Entity termsAndConditions = schema.addEntity("TermsAndConditions");
+        termsAndConditions.addIdProperty().primaryKey().autoincrement();
+        termsAndConditions.addStringProperty("timestamp");
+        termsAndConditions.addStringProperty("url");
+        return termsAndConditions;
     }
 }

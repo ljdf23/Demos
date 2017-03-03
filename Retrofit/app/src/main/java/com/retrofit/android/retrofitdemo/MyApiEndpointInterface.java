@@ -1,6 +1,7 @@
 package com.retrofit.android.retrofitdemo;
 import com.retrofit.android.retrofitdemo.OAuth.AccessToken;
 import com.retrofit.android.retrofitdemo.db.PhoneAllLines;
+import com.retrofit.android.retrofitdemo.db.TermsAndConditions;
 import com.retrofit.android.retrofitdemo.models.Request.Negocio;
 import com.retrofit.android.retrofitdemo.models.Response.NegocioResponse;
 
@@ -50,9 +51,11 @@ public interface MyApiEndpointInterface {
     Call<AccessToken> PostLoginPassword(@Path("id") String user,
                                         @Body String password);
 
-    @FormUrlEncoded
     @POST("/client/{id}/token")
     Call<AccessToken> getRefreshAccessToken(@Path("id") String user,
                                             @Body String refreshToken,
                                             @Body String token);
+    @GET("client/termsAndConditions")
+    Call<TermsAndConditions> GetTermsAndConditions();
+
 }

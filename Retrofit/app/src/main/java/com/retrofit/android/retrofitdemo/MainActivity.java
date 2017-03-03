@@ -28,6 +28,7 @@ import com.retrofit.android.retrofitdemo.db.OtherDao;
 import com.retrofit.android.retrofitdemo.db.PhoneAllLines;
 import com.retrofit.android.retrofitdemo.db.PhoneAllLinesDao;
 import com.retrofit.android.retrofitdemo.db.PlainDetail;
+import com.retrofit.android.retrofitdemo.db.TermsAndConditions;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -122,7 +123,9 @@ public class MainActivity extends AppCompatActivity
                                            */
                                            //endregion
 
-                                           /* Gson gson = new Gson();
+                                           //region parser directly from json string
+                                           /*
+                                            Gson gson = new Gson();
                                            DataTransferObjectsParser.dtoCatalog objectToParse =
                                                    new DataTransferObjectsParser.dtoCatalog();
                                            objectToParse = gson.fromJson("{\"timestamp\": 1487786669,\"carrier\":{1:\"Telcel\",2:\"Telcel\"},\"loanPaymentType\":{1:\"Telc2el\",3:\"Telcel\"}}", objectToParse.getClass());
@@ -183,13 +186,18 @@ public class MainActivity extends AppCompatActivity
                                                    "    }\n" +
                                                    "}"
                                            , objectToParse.getClass());
-                                           String json = "";*/
+                                           String json = "";
+                                           */
 
+                                           //endregion
 
+                                           //region insert catalog section
+
+                                           /*
                                            MyApiEndpointInterface apiService = retrofit.create(MyApiEndpointInterface.class);
 
 
-                                           /*Call<ResponseBody> call = apiService.GetCatalogs();
+                                           Call<ResponseBody> call = apiService.GetCatalogs();
                                            call.enqueue(new Callback<ResponseBody>() {
 
                                                @Override
@@ -210,6 +218,9 @@ public class MainActivity extends AppCompatActivity
                                                }
                                            });*/
 
+                                           //endregion
+
+                                           //region parser phonealllines section
                                             /*
                                            Call<PhoneAllLines> call = apiService.GetAllLines("userId");
                                            call.enqueue(new Callback<PhoneAllLines>() {
@@ -228,6 +239,12 @@ public class MainActivity extends AppCompatActivity
                                                }
                                            });
                                          */
+
+                                           //endregion
+
+                                           //region oauth section
+
+
                                            final AccessToken[] token = {null};
                                            final SharedPreferences prefs = getApplicationContext().getSharedPreferences(
                                                    BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
@@ -248,7 +265,7 @@ public class MainActivity extends AppCompatActivity
                                                        prefs.edit().putString("oauth.tokentype", token[0].getTokenType()).apply();
 
 
-                                                       MyApiEndpointInterface client_lines = ServiceGenerator.createService(MyApiEndpointInterface.class, token[0], getApplicationContext());
+                                                       /*MyApiEndpointInterface client_lines = ServiceGenerator.createService(MyApiEndpointInterface.class, token[0], getApplicationContext());
 
                                                        Call<PhoneAllLines> call_lines = client_lines.GetAllLines(password);
                                                        call_lines.enqueue(new Callback<PhoneAllLines>() {
@@ -264,6 +281,25 @@ public class MainActivity extends AppCompatActivity
                                                            public void onFailure(Call<PhoneAllLines> call, Throwable t) {
                                                                Log.e("error", "");
                                                            }
+                                                       });*/
+
+                                                       final DataTransferObjectsParser dataTransferObjectsParser = new DataTransferObjectsParser(getApplicationContext());
+                                                       MyApiEndpointInterface client_lines = ServiceGenerator.createService(MyApiEndpointInterface.class, token[0], getApplicationContext());
+
+                                                       Call<TermsAndConditions> call_lines = client_lines.GetTermsAndConditions();
+                                                       call_lines.enqueue(new Callback<TermsAndConditions>() {
+
+                                                           @Override
+                                                           public void onResponse(Call<TermsAndConditions> call_lines, Response<TermsAndConditions> response) {
+                                                               if (response.code() == 200) {
+                                                                   dataTransferObjectsParser.addTermsAndConditions(response);
+                                                               }
+                                                           }
+
+                                                           @Override
+                                                           public void onFailure(Call<TermsAndConditions> call, Throwable t) {
+                                                               Log.e("error", "");
+                                                           }
                                                        });
                                                    }
                                                }
@@ -274,9 +310,7 @@ public class MainActivity extends AppCompatActivity
                                                }
                                            });
 
-
-
-
+                                           //endregion
 
                                        }
                                        catch(Exception ex) {

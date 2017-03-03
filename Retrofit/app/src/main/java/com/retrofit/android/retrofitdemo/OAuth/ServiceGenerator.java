@@ -10,7 +10,6 @@ import com.retrofit.android.retrofitdemo.MyApiEndpointInterface;
 import java.io.IOException;
 
 import okhttp3.Authenticator;
-import okhttp3.Credentials;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -105,6 +104,7 @@ public class ServiceGenerator {
                             return null;
                         }
                     } catch(IOException e) {
+                        HttpLoggingInterceptor.Logger.DEFAULT.log(e.toString());
                         return null;
                     }
                 }

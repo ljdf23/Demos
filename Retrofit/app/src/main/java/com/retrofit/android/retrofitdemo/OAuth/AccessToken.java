@@ -33,13 +33,13 @@ public class AccessToken {
     }
 
     public String getTokenType() {
+        if(token_type == null)
+            token_type = "Bearer";
+        else
         // OAuth requires uppercase Authorization HTTP header value for token type
         if(!Character.isUpperCase(token_type.charAt(0))) {
             token_type = Character.toString(token_type.charAt(0)).toUpperCase() + token_type.substring(1);
         }
-
-        if(token_type == null)
-            token_type = "Bearer";
 
         return token_type;
     }
