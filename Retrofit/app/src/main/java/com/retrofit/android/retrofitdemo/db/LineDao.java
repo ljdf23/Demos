@@ -62,6 +62,9 @@ public class LineDao extends AbstractDao<Line, Long> {
                 "\"OWNER\" TEXT," + // 5: owner
                 "\"MAIN_LINE\" INTEGER," + // 6: mainLine
                 "\"id\" INTEGER);"); // 7: planDetail
+        // Add Indexes
+        db.execSQL("CREATE INDEX " + constraint + "IDX_LINE_LINE_ID ON LINE" +
+                " (\"LINE_ID\");");
     }
 
     /** Drops the underlying database table. */

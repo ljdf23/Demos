@@ -39,6 +39,7 @@ public class DatabaseGenerator {
         Entity planDetail = addPlanDetail(schema, other);
         Entity line = addLine(schema, planDetail);
         addPhoneAllLines(schema, line);
+        addCatalogs(schema);
     }
 
     private static Entity addUserEntities(final Schema schema) {
@@ -54,7 +55,7 @@ public class DatabaseGenerator {
     private static Entity addLine(final Schema schema, Entity planDetail) {
         Entity line = schema.addEntity("Line");
         line.addIdProperty().primaryKey().autoincrement();
-        line.addStringProperty("lineId").notNull();
+        line.addStringProperty("lineId").notNull().index();
         line.addLongProperty("number");
         line.addLongProperty("planId");
         line.addStringProperty("planName");
@@ -96,5 +97,15 @@ public class DatabaseGenerator {
         Property property = line.getProperties().get(0);
         phoneAllLines.addToMany(line, property, "lines");
         return phoneAllLines;
+    }
+
+    private static Entity addCatalogs(final Schema schema)
+    {
+        Entity catalogs = schema.addEntity("Catalogs");
+        catalogs.addIdProperty().primaryKey().autoincrement();
+        catalogs.addStringProperty("name").index();
+        catalogs.addIntProperty("key");
+        catalogs.addStringProperty("value");
+        return catalogs;
     }
 }

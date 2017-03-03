@@ -20,6 +20,7 @@ public class Line {
     private Long id;
 
     @NotNull
+    @Index
     private String lineId;
     private Long number;
     private Long planId;

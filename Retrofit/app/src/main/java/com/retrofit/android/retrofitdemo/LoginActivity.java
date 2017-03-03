@@ -37,14 +37,14 @@ public class LoginActivity extends AppCompatActivity {
             String code = uri.getQueryParameter("code");
             if (code != null) {
                 // get access token
-                LoginService loginService =
-                        ServiceGenerator.createService(LoginService.class, clientId, clientSecret);
-                Call<AccessToken> call = loginService.getAccessToken(code, "authorization_code");
-                try {
-                    AccessToken accessToken = call.execute().body();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+               // LoginService loginService =
+               //         ServiceGenerator.createService(LoginService.class, clientId, clientSecret);
+              //  Call<AccessToken> call = loginService.getAccessToken(code, "authorization_code");
+             //   try {
+                 //   AccessToken accessToken = call.execute().body();
+              //  } catch (IOException e) {
+              //      e.printStackTrace();
+              //  }
             } else if (uri.getQueryParameter("error") != null) {
                 // show an error message here
             }
